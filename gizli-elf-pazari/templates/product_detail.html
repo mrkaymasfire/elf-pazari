@@ -1,0 +1,214 @@
+<!-- product_detail.html -->
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Elf Pazarı</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
+    <style>
+        .product-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(15, 30, 15, 0.95);
+            border-radius: 25px;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            margin-top: 40px;
+        }
+        
+        .product-detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .product-detail-image {
+            background: rgba(30, 50, 30, 0.8);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            font-size: 8rem;
+        }
+        
+        .product-detail-info h1 {
+            color: #ffde7d;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .product-detail-price {
+            color: #d4af37;
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 20px 0;
+        }
+        
+        .product-features {
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #b8d8be;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            color: #ffde7d;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .quantity-display {
+            padding: 10px 20px;
+            background: rgba(30, 50, 30, 0.6);
+            border-radius: 10px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .btn-large {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .related-products {
+            margin-top: 60px;
+        }
+        
+        .related-products h2 {
+            color: #ffde7d;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="shop-background">
+    <div class="forest-overlay">
+        <div class="tree-side tree-left"></div>
+        <div class="tree-side tree-right"></div>
+    </div>
+    
+    <div class="product-detail-container">
+        <div class="product-detail-grid">
+            <!-- ÜRÜN RESMİ -->
+            <div class="product-detail-image">
+                🎁
+            </div>
+            
+            <!-- ÜRÜN BİLGİLERİ -->
+            <div class="product-detail-info">
+                <h1>{{ product.name }}</h1>
+                <div class="product-detail-price">{{ product.price }} Altın</div>
+                
+                <p style="color: #b8d8be; line-height: 1.6; margin: 20px 0;">
+                    {{ product.description }} Bu özel ürün, elf zanaatkarları tarafından geleneksel yöntemlerle üretilmiştir.
+                    Her biri el yapımı olan bu koleksiyon parçası, uzun yıllar saklanabilecek kalitede üretilmiştir.
+                </p>
+                
+                <div class="product-features">
+                    <div class="feature-item">
+                        <span>✨</span>
+                        <span>Elf Zanaatkarları İmzalı</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>🌟</span>
+                        <span>Işık Saçan Özellik</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>🎄</span>
+                        <span>Noel Ruhuyla Uyumlu</span>
+                    </div>
+                    <div class="feature-item">
+                        <span>🔮</span>
+                        <span>Büyülü Koruma</span>
+                    </div>
+                </div>
+                
+                <!-- MİKTAR SEÇİMİ -->
+                <div class="quantity-selector">
+                    <button class="quantity-btn">-</button>
+                    <div class="quantity-display">1</div>
+                    <button class="quantity-btn">+</button>
+                    <span style="color: #b8d8be; margin-left: 20px;">Adet</span>
+                </div>
+                
+                <!-- AKSİYON BUTONLARI -->
+                <div class="action-buttons">
+                    <button class="buy-button btn-large" onclick="alert('Sepete eklendi!')">
+                        🛒 Sepete Ekle
+                    </button>
+                    <button class="buy-button btn-large" style="background: linear-gradient(to bottom, #2a6b3a, #1a5b2a);">
+                        💳 Hemen Satın Al
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AÇIKLAMA -->
+        <div style="margin-top: 50px; padding: 30px; background: rgba(20, 40, 20, 0.6); border-radius: 15px;">
+            <h3 style="color: #ffde7d; margin-bottom: 20px;">📖 Ürün Hikayesi</h3>
+            <p style="color: #b8d8be; line-height: 1.7;">
+                Bu özel ürün, Kuzey Ormanları'ndaki gizli elf atölyelerinde geleneksel yöntemlerle üretilmiştir. 
+                Her bir parça, ustaların yıllar süren deneyimiyle şekillenmiş, büyülü formüllerle güçlendirilmiştir. 
+                Yeni yıl ruhunu yansıtan bu koleksiyon parçası, hem dekorasyon hem de şans getiren bir tılsım olarak kullanılabilir.
+            </p>
+        </div>
+        
+        <!-- İLGİLİ ÜRÜNLER -->
+        <div class="related-products">
+            <h2>Benzer Büyülü Ürünler</h2>
+            <div class="products-grid" style="grid-template-columns: repeat(4, 1fr);">
+                {% for i in range(4) %}
+                <div class="product-card">
+                    <div class="product-image">
+                        <span>✨</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Benzer Ürün {{ i+1 }}</h3>
+                        <div class="product-price">99.99 Altın</div>
+                        <button class="buy-button">İncele</button>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- NAVİGASYON BUTONLARI -->
+    <div style="text-align: center; margin-top: 40px;">
+        <a href="/magic_shop" class="action-button">← Tüm Ürünlere Dön</a>
+        <a href="/" class="action-button" style="margin-left: 20px;">🏠 Ana Sayfa</a>
+    </div>
+</body>
+</html>
