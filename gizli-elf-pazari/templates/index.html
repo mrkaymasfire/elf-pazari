@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gizli Elf Pazarı | Büyülü Noel Alışverişi</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Dinamik CSS değişkenleri */
+        :root {
+            --tree-spacing-1: 5%;
+            --tree-spacing-2: 15%;
+            --tree-spacing-3: 25%;
+            --tree-spacing-4: 35%;
+            --tree-spacing-5: 45%;
+            --tree-spacing-6: 55%;
+            --tree-spacing-7: 65%;
+            --tree-spacing-8: 75%;
+            --tree-spacing-9: 85%;
+            --tree-spacing-10: 95%;
+        }
+        
+        /* Temel düzen */
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 500vh; /* ÇOK DAHA UZUN SCROLL */
+            overflow-x: hidden;
+            font-family: 'Cinzel Decorative', serif;
+            background: linear-gradient(to bottom, 
+                #000510 0%,
+                #001020 10%,
+                #001830 30%,
+                #002040 60%,
+                #001830 90%,
+                #000510 100%
+            );
+            color: #ffde7d;
+            animation: skyPulse 30s infinite linear;
+        }
+        
+        @keyframes skyPulse {
+            0% { filter: hue-rotate(0deg) brightness(0.9); }
+            50% { filter: hue-rotate(5deg) brightness(1.1); }
+            100% { filter: hue-rotate(0deg) brightness(0.9); }
+        }
+        
+        /* Forest Scene */
+        .forest-scene {
+            position: relative;
+            min-height: 500vh;
+            z-index: 2;
+        }
+        
+        /* MIST EFFECT */
+        .mist-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(184, 216, 190, 0.05) 20%,
+                transparent 40%,
+                rgba(212, 175, 55, 0.03) 60%,
+                transparent 80%,
+                rgba(255, 255, 255, 0.02) 100%
+            );
+            animation: mistDrift 40s infinite linear;
+            pointer-events: none;
+            z-index: 3;
+        }
+        
+        @keyframes mistDrift {
+            0% { transform: translateY(0px) translateX(0px); }
+            100% { transform: translateY(150px) translateX(80px); }
+        }
+        
+        /* STARS */
+        .star-field {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 3s) infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        
+        /* MOON */
+        .moon-container {
+            position: fixed;
+            top: 10%;
+            right: 10%;
+            width: 80px;
+            height: 80px;
+            z-index: 2;
+            animation: moonFloat 8s infinite ease-in-out;
+        }
+        
+        .moon {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, #f8f4e6, #e8e0c0);
+            border-radius: 50%;
+            box-shadow: 
+                0 0 60px rgba(248, 244, 230, 0.9),
+                0 0 100px rgba(248, 244, 230, 0.5),
+                0 0 150px rgba(248, 244, 230, 0.3);
+            filter: blur(0.5px);
+        }
+        
+        @keyframes moonFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
+        }
+        
+        /* FOREST LAYERS */
+        .forest-layer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        .far-forest {
+            z-index: 2;
+            filter: blur(5px) brightness(0.3);
+            opacity: 0.8;
+        }
+        
+        .mid-forest {
+            z-index: 4;
+            filter: blur(2px) brightness(0.5);
+            opacity: 0.9;
+        }
+        
+        .near-forest {
+            z-index: 6;
+            filter: brightness(0.7);
+            opacity: 1;
+        }
+        
+        .tree-container {
+            position: absolute;
+            bottom: 0;
+        }
+        
+        .tree {
+            position: relative;
+            background: linear-gradient(to bottom, 
+                var(--tree-top, #1a4010) 0%,
+                var(--tree-middle, #0a3005) 50%,
+                var(--tree-bottom, #002000) 100%
+            );
+            clip-path: polygon(50% 0%, 30% 20%, 20% 40%, 15% 60%, 10% 80%, 0% 100%, 100% 100%, 90% 80%, 85% 60%, 80% 40%, 70% 20%);
+        }
+        
+        .tree-shadow {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 50%;
+            filter: blur(4px);
+            z-index: -1;
+        }
+        
+        .magic-light {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffde7d);
+            filter: blur(2px);
+            box-shadow: 
+                0 0 15px #ffde7d,
+                0 0 30px rgba(255, 222, 125, 0.5);
+            animation: lightFlicker 2s infinite alternate;
+            z-index: 5;
+        }
+        
+        @keyframes lightFlicker {
+            0% { opacity: 0.3; transform: scale(0.7); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.3; transform: scale(0.7); }
+        }
+        
+        /* MAGICAL PATH */
+        .magical-path {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 350px;
+            height: 100%;
+            z-index: 3;
+            filter: blur(2px);
+            animation: pathGlow 10s infinite alternate;
+        }
+        
+        @keyframes pathGlow {
+            0% { filter: blur(2px) brightness(0.8); }
+            100% { filter: blur(1px) brightness(1.2); }
+        }
+        
+        .path {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, 
+                rgba(90, 70, 40, 0.9) 0%,
+                rgba(110, 85, 50, 0.8) 20%,
+                rgba(130, 100, 60, 0.7) 40%,
+                rgba(150, 115, 70, 0.6) 60%,
+                rgba(170, 130, 80, 0.5) 80%,
+                transparent 100%
+            );
+            clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+        }
+        
+        /* BACK TO TOP */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffde7d;
+            text-decoration: none;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+        }
+        
+        .back-to-top:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        /* CART BADGE */
+        .cart-badge {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(145deg, 
+                rgba(255, 71, 87, 0.9) 0%,
+                rgba(255, 107, 129, 0.9) 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 
+                0 8px 25px rgba(255, 71, 87, 0.4),
+                inset 0 0 15px rgba(255, 255, 255, 0.3);
+            animation: badgePulse 2s infinite alternate;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes badgePulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        
+        .cart-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 
+                0 10px 30px rgba(255, 71, 87, 0.6),
+                inset 0 0 20px rgba(255, 255, 255, 0.4);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: white;
+            color: #ff4757;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* COUNTDOWN */
+        .countdown-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(212, 175, 55, 0.15);
+            backdrop-filter: blur(15px);
+            padding: 12px 25px;
+            border-radius: 50px;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            z-index: 1000;
+            color: #ffde7d;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            animation: countdownFloat 4s infinite ease-in-out;
+        }
+        
+        @keyframes countdownFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        .countdown-icon {
+            font-size: 1.2rem;
+            animation: giftFloat 3s infinite ease-in-out;
+        }
+        
+        @keyframes giftFloat {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+        }
+        
+        .countdown-text {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        /* SPECIAL EFFECTS */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, 
+                rgba(212, 175, 55, 0.3) 0%,
+                transparent 70%);
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+        }
+        
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* DEBUG INFO */
+        .debug-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.8rem;
+            z-index: 10000;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- SCROLL PROGRESS -->
+    <div class="scroll-progress-wrapper">
+        <div class="scroll-progress-bar" id="scrollProgress"></div>
+    </div>
+    
+    <!-- KAR TANELERİ -->
+    <div class="floating-snowflakes" id="snowflakes"></div>
+    
+    <!-- PARTIKÜLLER -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- ARKA PLAN IŞIKLARI -->
+    <div class="background-lights">
+        <div class="magic-light-spot" style="top: 20%; left: 10%;"></div>
+        <div class="magic-light-spot" style="top: 40%; left: 70%;"></div>
+        <div class="magic-light-spot" style="top: 60%; left: 30%;"></div>
+        <div class="magic-light-spot" style="top: 80%; left: 80%;"></div>
+    </div>
+    
+    <!-- MİST -->
+    <div class="mist-overlay"></div>
+    
+    <!-- YILDIZLAR -->
+    <div class="star-field" id="stars"></div>
+    
+    <!-- AY -->
+    <div class="moon-container">
+        <div class="moon"></div>
+    </div>
+    
+    <!-- GERİ SAYIM -->
+    <div class="countdown-container">
+        <div class="countdown-icon">🎄</div>
+        <div class="countdown-text" id="countdown">Noel'e 0 gün kaldı!</div>
+    </div>
+    
+    <!-- SEPET -->
+    <a href="/magic_shop" class="cart-badge">
+        <i class="fas fa-shopping-cart"></i>
+        <div class="cart-count">{{ cart_count }}</div>
+    </a>
+    
+    <!-- ANA BAŞLIK -->
+    <div class="main-title smooth-appear">
+        <h1>🎅 GİZLİ ELF PAZARI 🎄</h1>
+        <p class="subtitle">Bin yıllık gelenek, modern alışverişle buluşuyor</p>
+    </div>
+    
+    <!-- ANA İÇERİK -->
+    <div class="forest-scene">
+        <!-- PATİKA -->
+        <div class="magical-path">
+            <div class="path"></div>
+        </div>
+
+        <!-- UZAK ORMAN -->
+        <div class="forest-layer far-forest">
+            <div class="tree-container" style="left: var(--tree-spacing-1); width: 70px; height: 240px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-3); width: 60px; height: 220px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 30%; left: 40%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-5); width: 80px; height: 260px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 50%; left: 60%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-7); width: 65px; height: 230px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-9); width: 75px; height: 250px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 40%; left: 30%;"></div>
+            </div>
+        </div>
+
+        <!-- ORTA ORMAN -->
+        <div class="forest-layer mid-forest">
+            <div class="tree-container" style="left: var(--tree-spacing-2); width: 100px; height: 320px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 25%; left: 35%;"></div>
+                <div class="magic-light" style="top: 60%; left: 65%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-4); width: 110px; height: 340px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 35%; left: 50%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-6); width: 105px; height: 330px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 45%; left: 40%;"></div>
+                <div class="magic-light" style="top: 70%; left: 70%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-8); width: 95px; height: 310px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 55%; left: 30%;"></div>
+            </div>
+        </div>
+
+        <!-- YAKIN ORMAN -->
+        <div class="forest-layer near-forest">
+            <div class="tree-container" style="left: var(--tree-spacing-1); width: 140px; height: 420px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 20%; left: 25%;"></div>
+                <div class="magic-light" style="top: 45%; left: 60%;"></div>
+                <div class="magic-light" style="top: 75%; left: 40%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-4); width: 150px; height: 440px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 30%; left: 50%;"></div>
+                <div class="magic-light" style="top: 65%; left: 35%;"></div>
+                <div class="magic-light" style="top: 80%; left: 65%;"></div>
+            </div>
+            <div class="tree-container" style="left: var(--tree-spacing-7); width: 130px; height: 410px;">
+                <div class="tree" style="width: 100%; height: 100%;"></div>
+                <div class="tree-shadow"></div>
+                <div class="magic-light" style="top: 40%; left: 40%;"></div>
+                <div class="magic-light" style="top: 70%; left: 65%;"></div>
+            </div>
+        </div>
+
+        <!-- ELF KARAKTERİ -->
+        <div class="elf-character" id="elf">
+            <div class="elf-body"></div>
+            <div class="elf-head"></div>
+            <div class="elf-hat"></div>
+            <div class="elf-bag"></div>
+            <div class="elf-arm"></div>
+        </div>
+
+        <!-- BÜYÜTÜLMÜŞ MESAJLAR -->
+        <div class="magic-messages">
+            <div class="message-container message-1" id="message1">
+                <div class="message-content">
+                    <h2>🎄 Büyülü Orman'a Hoş Geldiniz! 🎄</h2>
+                    <p class="subtext">Gizemli bir patika seni bekliyor. Yürümeye devam et ve büyülü Noel dünyasını keşfet.</p>
+                    <div class="message-glow"></div>
+                </div>
+            </div>
+
+            <div class="message-container message-2" id="message2">
+                <div class="message-content">
+                    <h2>✨ Elf Zanaatkarlarının Hazırladığı Özel Koleksiyon ✨</h2>
+                    <p class="subtext">150'den fazla özel Noel ürünü seni bekliyor! Her biri el yapımı ve sınırlı sayıda.</p>
+                    <div class="message-glow"></div>
+                </div>
+            </div>
+
+            <div class="message-container message-3" id="message3">
+                <div class="message-content">
+                    <h2>🌟 Noel Ruhunu Evine Getir 🌟</h2>
+                    <p class="subtext">Giysiler, çikolatalar, bardaklar ve daha fazlası... Her zevke uygun seçenekler.</p>
+                    <div class="message-glow"></div>
+                </div>
+            </div>
+
+            <div class="message-container message-4" id="message4">
+                <div class="message-content">
+                    <h2>🎅 Gizli Elf Pazarı Senin İçin Kuruldu 🎅</h2>
+                    <p class="subtext">Bin yıllık gelenek, modern alışverişle buluşuyor. Keşfetmeye hazır mısın?</p>
+                    <div class="message-glow"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BÜYÜLÜ KAPI -->
+        <div class="magic-door-container" id="magicDoor">
+            <div class="magic-door">
+                <div class="door-left" id="doorLeft"></div>
+                <div class="door-right" id="doorRight"></div>
+                <div class="door-arch"></div>
+                <div class="door-knob left"></div>
+                <div class="door-knob right"></div>
+                <div class="door-glow"></div>
+            </div>
+            <div class="door-message">
+                <h1>GİZLİ ELF PAZARI</h1>
+                <p>10 Kategori • 150 Ürün</p>
+                <a href="/magic_shop" class="action-button">
+                    <span>🚪✨</span>
+                    Kapıyı Aç ve Alışverişe Başla
+                </a>
+            </div>
+        </div>
+
+        <!-- SCROLL İPUCU -->
+        <div class="scroll-guide" id="scrollGuide">
+            <div class="guide-icon">↓</div>
+            <span>Aşağı kaydırın ve büyülü yolculuğa başlayın</span>
+        </div>
+    </div>
+    
+    <!-- BACK TO TOP -->
+    <a href="#" class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    
+    <!-- ENTRANCE BUTTON -->
+    <a href="/magic_shop" class="entrance-button">
+        <span>🛍️</span>
+        Elf Pazarı'na Git
+    </a>
+    
+    <!-- DEBUG INFO -->
+    <div class="debug-info" id="debugInfo">Scroll: 0%</div>
+
+    <script>
+        // ===========================================
+        // SADECE SCROLL İZLEME (Minimal JS)
+        // ===========================================
+        
+        // DOM yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            // Kar taneleri oluştur
+            createSnowflakes();
+            
+            // Yıldızlar oluştur
+            createStars();
+            
+            // Partiküller oluştur
+            createParticles();
+            
+            // Geri sayımı başlat
+            updateCountdown();
+            
+            // Scroll izleyicisini başlat
+            initScrollAnimations();
+            
+            // Her 10 saniyede bir geri sayımı güncelle
+            setInterval(updateCountdown, 10000);
+        });
+        
+        // Kar taneleri oluştur
+        function createSnowflakes() {
+            const container = document.getElementById('snowflakes');
+            const flakes = ['❄', '❅', '❆', '＊', '·', '⋆', '✢'];
+            
+            for (let i = 0; i < 60; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+                flake.style.left = Math.random() * 100 + 'vw';
+                flake.style.animationDuration = (Math.random() * 15 + 15) + 's';
+                flake.style.animationDelay = Math.random() * 10 + 's';
+                flake.style.fontSize = (Math.random() * 20 + 10) + 'px';
+                flake.style.opacity = Math.random() * 0.5 + 0.3;
+                container.appendChild(flake);
+            }
+        }
+        
+        // Yıldızlar oluştur
+        function createStars() {
+            const container = document.getElementById('stars');
+            
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.width = (Math.random() * 3 + 1) + 'px';
+                star.style.height = star.style.width;
+                star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+                star.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(star);
+            }
+        }
+        
+        // Partiküller oluştur
+        function createParticles() {
+            const container = document.getElementById('particles');
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.width = (Math.random() * 100 + 50) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDuration = (Math.random() * 30 + 30) + 's';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                container.appendChild(particle);
+            }
+        }
+        
+        // Geri sayımı güncelle
+        function updateCountdown() {
+            const now = new Date();
+            const christmas = new Date(now.getFullYear(), 11, 25); // 25 Aralık
+            if (now > christmas) {
+                christmas.setFullYear(christmas.getFullYear() + 1);
+            }
+            
+            const diff = christmas - now;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            
+            document.getElementById('countdown').textContent = `Noel'e ${days} gün kaldı!`;
+        }
+        
+        // Scroll animasyonlarını başlat
+        function initScrollAnimations() {
+            let lastScroll = 0;
+            let ticking = false;
+            
+            window.addEventListener('scroll', function() {
+                lastScroll = window.scrollY;
+                
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        updateScrollAnimations(lastScroll);
+                        ticking = false;
+                    });
+                    
+                    ticking = true;
+                }
+            });
+            
+            // Sayfa yüklendiğinde bir kere çalıştır
+            updateScrollAnimations(window.scrollY);
+        }
+        
+        // Scroll animasyonlarını güncelle
+        function updateScrollAnimations(scrollY) {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrollPercentage = (scrollY / documentHeight) * 100;
+            
+            // Scroll progress bar
+            document.getElementById('scrollProgress').style.width = scrollPercentage + '%';
+            
+            // Debug info
+            document.getElementById('debugInfo').textContent = `Scroll: ${Math.round(scrollPercentage)}%`;
+            
+            // Elf pozisyonu
+            const elf = document.getElementById('elf');
+            const elfTop = 100 + (scrollPercentage * 4); // Elf'i yavaşça yukarı taşı
+            elf.style.bottom = elfTop + 'px';
+            
+            // Elf ölçekleme
+            const elfScale = 0.8 + (scrollPercentage * 0.002);
+            elf.style.transform = `translateX(-50%) scale(${elfScale})`;
+            
+            // Mesajları göster/gizle
+            const message1 = document.getElementById('message1');
+            const message2 = document.getElementById('message2');
+            const message3 = document.getElementById('message3');
+            const message4 = document.getElementById('message4');
+            
+            // Her mesaj farklı scroll pozisyonunda görünsün
+            if (scrollPercentage > 5 && scrollPercentage < 20) {
+                message1.classList.add('show');
+                message2.classList.remove('show');
+                message3.classList.remove('show');
+                message4.classList.remove('show');
+            } else if (scrollPercentage > 25 && scrollPercentage < 40) {
+                message1.classList.remove('show');
+                message2.classList.add('show');
+                message3.classList.remove('show');
+                message4.classList.remove('show');
+            } else if (scrollPercentage > 45 && scrollPercentage < 60) {
+                message1.classList.remove('show');
+                message2.classList.remove('show');
+                message3.classList.add('show');
+                message4.classList.remove('show');
+            } else if (scrollPercentage > 65 && scrollPercentage < 80) {
+                message1.classList.remove('show');
+                message2.classList.remove('show');
+                message3.classList.remove('show');
+                message4.classList.add('show');
+            }
+            
+            // Kapıyı göster
+            const magicDoor = document.getElementById('magicDoor');
+            if (scrollPercentage > 70) {
+                magicDoor.style.opacity = '1';
+                
+                // Kapıyı aç
+                const doorLeft = document.getElementById('doorLeft');
+                const doorRight = document.getElementById('doorRight');
+                const doorOpenAmount = Math.min((scrollPercentage - 70) * 1.5, 45);
+                
+                doorLeft.style.transform = `rotateY(-${doorOpenAmount}deg)`;
+                doorRight.style.transform = `rotateY(${doorOpenAmount}deg)`;
+                
+                // Scroll guide'ı gizle
+                document.getElementById('scrollGuide').style.opacity = '0';
+            } else {
+                magicDoor.style.opacity = '0';
+                document.getElementById('scrollGuide').style.opacity = '1';
+            }
+            
+            // Back to top butonu
+            const backToTop = document.getElementById('backToTop');
+            if (scrollPercentage > 20) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            
+            // Scroll guide opacity
+            const guideOpacity = Math.max(0, 1 - (scrollPercentage / 30));
+            document.getElementById('scrollGuide').style.opacity = guideOpacity;
+        }
+        
+        // Back to top butonu
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>

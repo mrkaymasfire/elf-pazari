@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sepetim - Gizli Elf Pazarı</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .cart-background {
+            background: linear-gradient(to bottom, #0c1b0c 0%, #143214 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        
+        .cart-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(15, 30, 15, 0.98);
+            border-radius: 25px;
+            padding: 40px;
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .cart-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .cart-header h1 {
+            color: #ffde7d;
+            font-size: 4rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+        
+        .cart-header p {
+            color: #b8d8be;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .cart-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .cart-stat {
+            background: rgba(30, 50, 30, 0.6);
+            padding: 15px 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .cart-stat-value {
+            color: #ffde7d;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .cart-stat-label {
+            color: #b8d8be;
+            font-size: 0.9rem;
+        }
+        
+        .cart-items {
+            margin-bottom: 40px;
+        }
+        
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 25px;
+            background: rgba(30, 50, 30, 0.8);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .cart-item:hover {
+            background: rgba(30, 50, 30, 0.9);
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            flex: 1;
+        }
+        
+        .cart-item-image {
+            width: 120px;
+            height: 120px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-details h3 {
+            color: #ffde7d;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .cart-item-category {
+            color: #b8d8be;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .cart-item-price {
+            color: #d4af37;
+            font-weight: bold;
+            font-size: 1.8rem;
+            margin-top: 10px;
+        }
+        
+        .cart-item-currency {
+            font-size: 1.2rem;
+            color: #ffde7d;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #b8d8be;
+        }
+        
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn-small {
+            width: 35px;
+            height: 35px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: #ffde7d;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn-small:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .quantity-input {
+            width: 70px;
+            text-align: center;
+            background: rgba(30,50,30,0.8);
+            color: #ffde7d;
+            border: 1px solid rgba(212,175,55,0.3);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 1.1rem;
+        }
+        
+        .cart-item-total {
+            color: #ffde7d;
+            font-weight: bold;
+            font-size: 1.3rem;
+            min-width: 120px;
+            text-align: right;
+        }
+        
+        .cart-item-actions {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .remove-btn {
+            padding: 12px 25px;
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid rgba(255, 71, 87, 0.4);
+            color: #ff6b81;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-family: 'MedievalSharp', cursive;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remove-btn:hover {
+            background: rgba(255, 71, 87, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .cart-summary {
+            background: rgba(20, 40, 20, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 40px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #b8d8be;
+            font-size: 1.3rem;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .summary-total {
+            color: #ffde7d;
+            font-size: 2.5rem;
+            font-weight: bold;
+            border-top: 2px solid rgba(212, 175, 55, 0.3);
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        
+        .summary-discount {
+            color: #4CAF50;
+        }
+        
+        .summary-savings {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .cart-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            gap: 20px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 20px;
+            text-decoration: none;
+            font-family: 'Cinzel Decorative', serif;
+            font-weight: bold;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .continue-shopping {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.4);
+            color: #ffde7d;
+        }
+        
+        .continue-shopping:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .checkout-btn {
+            background: linear-gradient(to bottom, #2a6b3a, #1a5b2a);
+            border: 2px solid #1a5b2a;
+            color: white;
+        }
+        
+        .checkout-btn:hover {
+            background: linear-gradient(to bottom, #3a7b4a, #2a6b3a);
+            transform: translateY(-5px);
+        }
+        
+        .clear-cart {
+            background: rgba(255, 71, 87, 0.1);
+            border: 2px solid rgba(255, 71, 87, 0.4);
+            color: #ff6b81;
+        }
+        
+        .clear-cart:hover {
+            background: rgba(255, 71, 87, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 80px 40px;
+        }
+        
+        .empty-cart h2 {
+            color: #ffde7d;
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .empty-cart p {
+            color: #b8d8be;
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .forest-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .tree-side {
+            position: absolute;
+            bottom: 0;
+            width: 200px;
+            height: 100%;
+        }
+        
+        .tree-left {
+            left: 0;
+            background: linear-gradient(to right, rgba(26, 54, 20, 0.8), transparent);
+        }
+        
+        .tree-right {
+            right: 0;
+            background: linear-gradient(to left, rgba(26, 54, 20, 0.8), transparent);
+        }
+        
+        .cart-item-discount {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        
+        .original-price {
+            color: #b8d8be;
+            text-decoration: line-through;
+            font-size: 1rem;
+            margin-right: 10px;
+        }
+        
+        @media (max-width: 992px) {
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .cart-item-quantity,
+            .cart-item-total,
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .cart-actions {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .cart-container {
+                padding: 20px;
+            }
+            
+            .cart-header h1 {
+                font-size: 3rem;
+            }
+            
+            .cart-item-info {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .cart-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body class="cart-background">
+    <!-- ORMAN KENARLARI -->
+    <div class="forest-overlay">
+        <div class="tree-side tree-left"></div>
+        <div class="tree-side tree-right"></div>
+    </div>
+    
+    <!-- SEPET İÇERİĞİ -->
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>🛒 Büyülü Sepetin</h1>
+            <p>Elf zanaatkarlarının özenle hazırladığı Noel ürünleri burada birikiyor</p>
+            
+            {% if cart_items %}
+            <div class="cart-stats">
+                <div class="cart-stat">
+                    <div class="cart-stat-value">{{ cart_items|length }}</div>
+                    <div class="cart-stat-label">Ürün Çeşidi</div>
+                </div>
+                <div class="cart-stat">
+                    <div class="cart-stat-value">{{ cart_items|sum(attribute='quantity') }}</div>
+                    <div class="cart-stat-label">Toplam Adet</div>
+                </div>
+                <div class="cart-stat">
+                    <div class="cart-stat-value">{{ "%.2f"|format(total) }}<span class="cart-item-currency"> ₺</span></div>
+                    <div class="cart-stat-label">Toplam Tutar</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if cart_items %}
+        <div class="cart-items">
+            {% for item in cart_items %}
+            <div class="cart-item">
+                {% if item.discount > 0 %}
+                <div class="cart-item-discount">-{{ item.discount }}%</div>
+                {% endif %}
+                
+                <div class="cart-item-info">
+                    <div class="cart-item-image">
+                        {% if item.image %}
+                        <img src="/static/images/{{ item.image }}" alt="{{ item.name }}">
+                        {% else %}
+                        <span style="font-size: 3rem;">🎁</span>
+                        {% endif %}
+                    </div>
+                    <div class="cart-item-details">
+                        <h3>{{ item.name }}</h3>
+                        <div class="cart-item-category">{{ item.category }}</div>
+                        <div class="cart-item-price">
+                            {% if item.discount > 0 %}
+                            <span class="original-price">{{ "%.2f"|format(item.original_price) }} ₺</span>
+                            {% endif %}
+                            {{ "%.2f"|format(item.price) }} <span class="cart-item-currency">₺</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cart-item-quantity">
+                    <div class="quantity-control">
+                        <form action="/update_cart/{{ item.product_id }}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                            <button type="button" class="quantity-btn-small" onclick="decreaseQuantity(this)">-</button>
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99" class="quantity-input">
+                            <button type="button" class="quantity-btn-small" onclick="increaseQuantity(this)">+</button>
+                            <button type="submit" class="quantity-btn-small" style="background: rgba(212,175,55,0.2); padding: 0 15px;">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="cart-item-total">
+                    {{ "%.2f"|format(item.price * item.quantity) }} <span class="cart-item-currency">₺</span>
+                </div>
+                
+                <div class="cart-item-actions">
+                    <a href="/remove_from_cart/{{ item.product_id }}" class="remove-btn">
+                        <i class="fas fa-trash"></i> Kaldır
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Ara Toplam:</span>
+                <span>{{ "%.2f"|format(total) }} ₺</span>
+            </div>
+            
+            {% set discount_total = cart_items|sum(attribute='original_price') - cart_items|sum(attribute='price') %}
+            {% if discount_total > 0 %}
+            <div class="summary-row summary-discount">
+                <span>İndirimler:</span>
+                <span>-{{ "%.2f"|format(discount_total) }} ₺</span>
+            </div>
+            {% endif %}
+            
+            <div class="summary-row">
+                <span>Kargo:</span>
+                <span>ÜCRETSİZ ✨</span>
+            </div>
+            
+            <div class="summary-row summary-total">
+                <span>TOPLAM TUTAR:</span>
+                <span>{{ "%.2f"|format(total) }} ₺</span>
+            </div>
+            
+            {% if discount_total > 0 %}
+            <div class="summary-row summary-savings">
+                <span>Toplam Kazanç:</span>
+                <span>{{ "%.2f"|format(discount_total) }} ₺ TASARRUF</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="cart-actions">
+            <a href="/magic_shop" class="action-btn continue-shopping">
+                <i class="fas fa-arrow-left"></i> Alışverişe Devam Et
+            </a>
+            <a href="/clear_cart" class="action-btn clear-cart" onclick="return confirm('Sepeti temizlemek istediğinize emin misiniz?')">
+                <i class="fas fa-trash"></i> Sepeti Temizle
+            </a>
+            <a href="/checkout" class="action-btn checkout-btn">
+                <i class="fas fa-lock"></i> Güvenli Ödeme
+            </a>
+        </div>
+        
+        {% else %}
+        <div class="empty-cart">
+            <h2>✨ Sepetin Boş ✨</h2>
+            <p>Elf pazarında henüz bir Noel ürünü seçmedin. <br>Büyülü ürünleri keşfetmek için aşağıdaki butonu kullanabilirsin.</p>
+            <a href="/magic_shop" class="action-button" style="display: inline-flex; gap: 15px; padding: 20px 40px; font-size: 1.2rem;">
+                <i class="fas fa-star"></i>
+                Elf Pazarı'na Git
+            </a>
+        </div>
+        {% endif %}
+        
+        <!-- NAVİGASYON -->
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+            <a href="/" class="action-button" style="padding: 15px 30px; font-size: 1.1rem; margin: 0 10px;">
+                <i class="fas fa-home"></i> Ana Sayfaya Dön
+            </a>
+            <a href="/magic_shop" class="action-button" style="padding: 15px 30px; font-size: 1.1rem; margin: 0 10px;">
+                <i class="fas fa-shopping-bag"></i> Alışverişe Devam Et
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Miktar kontrolleri
+        function decreaseQuantity(button) {
+            const input = button.parentNode.querySelector('input[type="number"]');
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+        
+        function increaseQuantity(button) {
+            const input = button.parentNode.querySelector('input[type="number"]');
+            if (parseInt(input.value) < 99) {
+                input.value = parseInt(input.value) + 1;
+            }
+        }
+        
+        // Sepet miktarı güncelleme
+        function updateCartItem(form) {
+            const quantity = form.querySelector('input[name="quantity"]').value;
+            const productId = form.action.split('/').pop();
+            
+            fetch(`/update_cart/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `quantity=${quantity}`
+            }).then(() => {
+                location.reload();
+            });
+            
+            return false;
+        }
+        
+        // Tüm formları güncelle
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                updateCartItem(this);
+            });
+        });
+        
+        // Kar taneleri efekti
+        function createSnowflakes() {
+            const snowflakes = ['❄', '❅', '❆'];
+            const body = document.body;
+            
+            for (let i = 0; i < 20; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.position = 'fixed';
+                snowflake.style.top = '-50px';
+                snowflake.style.left = Math.random() * 100 + 'vw';
+                snowflake.style.fontSize = (Math.random() * 15 + 10) + 'px';
+                snowflake.style.opacity = Math.random() * 0.5 + 0.3;
+                snowflake.style.pointerEvents = 'none';
+                snowflake.style.zIndex = '1';
+                snowflake.style.animation = `fall ${Math.random() * 5 + 5}s linear infinite`;
+                body.appendChild(snowflake);
+            }
+            
+            // CSS animasyonu ekle
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fall {
+                    to { transform: translateY(100vh) rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', createSnowflakes);
+    </script>
+</body>
+</html>
