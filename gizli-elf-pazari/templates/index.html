@@ -607,7 +607,7 @@
             </div>
             <div class="door-message">
                 <h1>GİZLİ ELF PAZARI</h1>
-                <p>10 Kategori • 150 Ürün</p>
+                <p>Kategoriler • Eşsiz Ürünler </p>
                 <a href="/magic_shop" class="action-button">
                     <span>🚪✨</span>
                     Kapıyı Aç ve Alışverişe Başla
@@ -724,7 +724,7 @@
             const diff = christmas - now;
             const days = Math.floor(diff / (1000 * 60 * 60 * 24));
             
-            document.getElementById('countdown').textContent = `Noel'e ${days} gün kaldı!`;
+            document.getElementById('countdown').textContent = `Noel'e 3 gün kaldı!`;
         }
         
         // Scroll animasyonlarını başlat
@@ -842,4 +842,16 @@
         });
     </script>
 </body>
+</html>
+        // Back to top butonu
+        document.getElementById('backToTop').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+
 </html>
